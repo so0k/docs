@@ -1,22 +1,22 @@
 ---
-title: Deploy Lambda functions with TypeScript and CDK for Terraform
-description: Deploy two AWS Lambda stacks from a single CDKTF app, package Lambda artifacts with TerraformAsset, and manage each stack independently.
+title: Deploy Lambda functions with TypeScript and CDK Terrain
+description: Deploy two AWS Lambda stacks from a single CDKTN app, package Lambda artifacts with TerraformAsset, and manage each stack independently.
 ---
 
 <Note>
 This guide was recovered from the [Wayback Machine snapshot of “Deploy Lambda functions with TypeScript and CDK for Terraform”](https://web.archive.org/web/20251112223320/https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-assets-stacks-lambda).
 </Note>
 
-CDK for Terraform (CDKTF) stacks let you manage multiple Terraform configurations within a single application. Each stack synthesizes to its own Terraform configuration and state file, which lets you deploy and destroy stacks independently.
+CDK Terrain (CDKTN) stacks let you manage multiple Terraform configurations within a single application. Each stack synthesizes to its own Terraform configuration and state file, which lets you deploy and destroy stacks independently.
 
-In this tutorial, you deploy a CDKTF application (TypeScript-only) with two stacks. Each stack provisions a small AWS Lambda function and uses `TerraformAsset` to package the Lambda deployment artifact.
+In this tutorial, you deploy a CDKTN application (TypeScript-only) with two stacks. Each stack provisions a small AWS Lambda function and uses `TerraformAsset` to package the Lambda deployment artifact.
 
 ## Prerequisites
 
-This tutorial assumes you are already familiar with the basic CDKTF workflow. If you are new to CDKTF, start with the [install tutorial](/tutorials/install).
+This tutorial assumes you are already familiar with the basic CDKTN workflow. If you are new to CDKTN, start with the [install tutorial](/tutorials/install).
 
 - Terraform v1.2+ (or [OpenTofu](https://opentofu.org/))
-- CDKTF v0.15+
+- CDKTN v0.15+
 - AWS account
 - AWS credentials configured for Terraform
 - Node.js + npm
@@ -25,11 +25,11 @@ This tutorial assumes you are already familiar with the basic CDKTF workflow. If
 Some of the infrastructure in this tutorial does not qualify for the AWS free tier. Destroy the infrastructure at the end of the guide to avoid unnecessary charges.
 </Warning>
 
-<Tip>CDKTF works with both Terraform and OpenTofu. To run OpenTofu, set `TERRAFORM_BINARY_NAME=tofu` before using the CLI—refer to [Environment Variables](/docs/create-and-deploy/environment-variables) for details.</Tip>
+<Tip>CDKTN works with both Terraform and OpenTofu. To run OpenTofu, set `TERRAFORM_BINARY_NAME=tofu` before using the CLI. Refer to [Environment Variables](/docs/create-and-deploy/environment-variables) for details.</Tip>
 
-## Explore CDKTF application
+## Explore CDKTN application
 
-Clone the sample repository and move into the CDKTF project directory.
+Clone the sample repository and move into the CDKTN project directory.
 
 ```shell Shell
 git clone https://github.com/hashicorp-education/learn-cdktf-assets-stacks-lambda
@@ -50,19 +50,19 @@ found 0 vulnerabilities
 Add the AWS and Random providers.
 
 ```shell-session Shell
-cdktf provider add "aws@~>4.0" random
+cdktn provider add "aws@~>4.0" random
 Found pre-built provider.
-Installing package @cdktf/provider-aws ...
+Installing package @cdktn/provider-aws ...
 Package installed.
 Found pre-built provider.
-Installing package @cdktf/provider-random ...
+Installing package @cdktn/provider-random ...
 Package installed.
 ```
 
 List the stacks in the application.
 
 ```shell-session Shell
-cdktf list
+cdktn list
 
 Stack name           Path
 lambda-hello-world   cdktf.out/stacks/lambda-hello-world
@@ -74,7 +74,7 @@ lambda-hello-name    cdktf.out/stacks/lambda-hello-name
 Deploy the `lambda-hello-world` stack.
 
 ```shell-session Shell
-cdktf deploy lambda-hello-world
+cdktn deploy lambda-hello-world
 ...
 Apply complete! Resources: 8 added, 0 changed, 0 destroyed.
 
@@ -89,7 +89,7 @@ Open the `url` output in your browser to confirm the API gateway returns a greet
 Deploy the `lambda-hello-name` stack.
 
 ```shell-session Shell
-cdktf deploy lambda-hello-name
+cdktn deploy lambda-hello-name
 ...
 Apply complete! Resources: 8 added, 0 changed, 0 destroyed.
 
@@ -103,7 +103,7 @@ Append `?name=Terry` to the URL to confirm the API gateway responds with a perso
 
 ## Inspect synthesized stacks
 
-CDKTF generates a `cdktf.out` directory when it synthesizes the Terraform configuration (during `cdktf synth` or `cdktf deploy`). Each stack has its own folder under `cdktf.out/stacks`.
+CDKTN generates a `cdktf.out` directory when it synthesizes the Terraform configuration (during `cdktn synth` or `cdktn deploy`). Each stack has its own folder under `cdktf.out/stacks`.
 
 ```text cdktf.out/
 cdktf.out/
@@ -132,13 +132,13 @@ Each stack also has its own state file (for example, `terraform.lambda-hello-wor
 Destroy both stacks to remove AWS resources.
 
 ```shell-session Shell
-cdktf destroy lambda-hello-world
+cdktn destroy lambda-hello-world
 ...
 Destroy complete! Resources: 8 destroyed.
 ```
 
 ```shell-session Shell
-cdktf destroy lambda-hello-name
+cdktn destroy lambda-hello-name
 ...
 Destroy complete! Resources: 8 destroyed.
 ```
@@ -146,4 +146,4 @@ Destroy complete! Resources: 8 destroyed.
 ## Next steps
 
 - Continue with [Deploy applications](/tutorials/deploy-applications) for an end-to-end, multi-step deployment workflow.
-- Review how stacks work in CDKTF and Terraform state in [Stacks](/docs/concepts/stacks).
+- Review how stacks work in CDKTN and Terraform state in [Stacks](/docs/concepts/stacks).

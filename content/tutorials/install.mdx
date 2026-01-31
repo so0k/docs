@@ -1,87 +1,89 @@
 ---
-title: Install CDK for Terraform and run a quick start demo
-description: Install the CDK for Terraform CLI, initialize a project in your preferred language, and deploy the Docker-based quick start container.
+title: Install CDK Terrain and run a quick start demo
+description: Install the CDK Terrain CLI, initialize a project in your preferred language, and deploy the Docker-based quick start container.
 ---
 
 <Note>
 This guide was recovered from the [Wayback Machine snapshot of “Install CDK for Terraform and run a quick start demo”](https://web.archive.org/web/20251115095039/https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-install).
 </Note>
 
-The Cloud Development Kit for Terraform (CDKTF) lets you define infrastructure in familiar programming languages while still creating plans with Terraform (or OpenTofu). You can use CDKTF with hundreds of providers and existing modules, adopt Terraform Cloud/HCP Terraform workflows, and ship infrastructure with the development practices you already use for application code.
+CDK Terrain (CDKTN) lets you define infrastructure in familiar programming languages while still creating plans with Terraform (or OpenTofu). You can use CDKTN with hundreds of providers and existing modules, adopt Terraform Cloud/HCP Terraform workflows, and ship infrastructure with the development practices you already use for application code.
 
-![Terraform as Platform diagram](../images/tutorials/terraform-as-platform.png)
+import { PlatformDiagram } from '/snippets/PlatformDiagram.jsx';
 
-Follow this tutorial to install the CDKTF CLI and run the quick start project that provisions an NGINX container with Docker.
+<PlatformDiagram />
+
+Follow this tutorial to install the CDKTN CLI and run the quick start project that provisions an NGINX container with Docker.
 
 ## Prerequisites
 
 - Terraform CLI 1.2+ (or [OpenTofu](https://opentofu.org/))
 - Node.js 16+ and npm 16+
 - Docker Desktop or another Docker runtime
-- Your preferred CDKTF language toolchain (TypeScript v4.4 + Node.js 16.13, Python 3.10 + Pipenv, Go 1.20+, .NET 6+, or Java 17 with Maven)
+- Your preferred CDKTN language toolchain (TypeScript v4.4 + Node.js 16.13, Python 3.10 + Pipenv, Go 1.20+, .NET 6+, or Java 17 with Maven)
 
-## Install CDKTF
+## Install CDKTN
 
-You can install the `cdktf` CLI globally with npm on any platform or with Homebrew on macOS. Pick the option that matches how you manage global tools.
+You can install the `cdktn` CLI globally with npm on any platform or with Homebrew on macOS. Pick the option that matches how you manage global tools.
 
 <Tabs>
   <Tab title="npm (stable)">
 
   ```shell Shell
-  npm install --global cdktf-cli@latest
+  npm install --global cdktn-cli@latest
   ```
 
   </Tab>
   <Tab title="npm (development)">
 
   ```shell Shell
-  npm install --global cdktf-cli@next
+  npm install --global cdktn-cli@next
   ```
 
   </Tab>
   <Tab title="Homebrew (macOS)">
 
   ```shell Shell
-  brew install cdktf
+  brew install cdktn
   ```
 
   </Tab>
 </Tabs>
 
-<Tip>CDKTF works with both Terraform and OpenTofu. To run OpenTofu, set `TERRAFORM_BINARY_NAME=tofu` before using the CLI—refer to [Environment Variables](/docs/create-and-deploy/environment-variables) for details.</Tip>
+<Tip>CDKTN works with both Terraform and OpenTofu. To run OpenTofu, set `TERRAFORM_BINARY_NAME=tofu` before using the CLI. Refer to [Environment Variables](/docs/create-and-deploy/environment-variables) for details.</Tip>
 
 ## Verify the installation
 
 Confirm that the CLI is on your `PATH` and review the available subcommands.
 
 ```shell-session Shell
-cdktf help
-cdktf
+cdktn help
+cdktn
 
 Commands:
-  cdktf init   Create a new cdktf project from a template.
-  cdktf deploy Deploy the given stacks (aliases: apply)
-  cdktf destroy Destroy the given stacks
-  cdktf synth  Synthesize Terraform configuration for your app
+  cdktn init   Create a new cdktn project from a template.
+  cdktn deploy Deploy the given stacks (aliases: apply)
+  cdktn destroy Destroy the given stacks
+  cdktn synth  Synthesize Terraform configuration for your app
 
 Options:
   --version  Show version number
   -h, --help Show help
 ```
 
-Use `cdktf init --help` whenever you need more detail on initialization flags.
+Use `cdktn init --help` whenever you need more detail on initialization flags.
 
 ```shell-session Shell
-cdktf init --help
+cdktn init --help
 
-Create a new cdktf project from a template.
+Create a new cdktn project from a template.
 
 Options include:
   --template <name|url>   Built-in templates: csharp, go, java, python, python-pip, typescript
   --project-name <text>   Project directory name
   --providers <list>      Comma-separated providers to preconfigure
   --local                 Store Terraform state locally (default false)
-  --cdktf-version <tag>   CLI version to scaffold with
+  --cdktn-version <tag>   CLI version to scaffold with
 ```
 
 ## Quick start tutorial
@@ -93,8 +95,8 @@ The following steps install dependencies, generate the sample application, edit 
 Create a workspace for the tutorial and move into it.
 
 ```shell Shell
-mkdir learn-cdktf-docker
-cd learn-cdktf-docker
+mkdir learn-cdktn-docker
+cd learn-cdktn-docker
 ```
 
 Initialize the project in your preferred language and add the Docker provider. The `--local` flag keeps Terraform state in the project directory, which is convenient for the quick start.
@@ -102,62 +104,62 @@ Initialize the project in your preferred language and add the Docker provider. T
 <CodeGroup>
 
 ```shell-session TypeScript
-cdktf init --template=typescript --providers=kreuzwerker/docker --local
+cdktn init --template=typescript --providers=kreuzwerker/docker --local
 Note: By supplying '--local' option you have chosen local storage mode.
-? Project Name learn-cdktf-docker
-? Project Description A simple getting started project for cdktf.
+? Project Name learn-cdktn-docker
+? Project Description A simple getting started project for cdktn.
 ? Do you want to start from an existing Terraform project? No
-? Do you want to send crash reports to the CDKTF team? Yes
+? Do you want to send crash reports to the CDKTN team? Yes
 added 301 packages in 6s
 ========================================================================================================
-Your cdktf typescript project is ready!
+Your cdktn typescript project is ready!
 ```
 
 ```shell-session Python
-cdktf init --template=python --providers=kreuzwerker/docker --local
+cdktn init --template=python --providers=kreuzwerker/docker --local
 Note: By supplying '--local' option you have chosen local storage mode.
-? Project Name learn-cdktf-docker
-? Project Description A simple getting started project for cdktf.
+? Project Name learn-cdktn-docker
+? Project Description A simple getting started project for cdktn.
 Creating a virtualenv for this project...
 ✔ Successfully created virtual environment!
 Installing dependencies from Pipfile.lock (c0c5a6)...
-Installing cdktf~=0.15.0.dev59...
-Your cdktf python project is ready!
+Installing cdktn~=0.15.0.dev59...
+Your cdktn python project is ready!
 ```
 
 ```shell-session Go
-cdktf init --template=go --providers=kreuzwerker/docker --local
+cdktn init --template=go --providers=kreuzwerker/docker --local
 Note: By supplying '--local' option you have chosen local storage mode.
-? Project Name learn-cdktf-docker
-? Project Description A simple getting started project for cdktf.
+? Project Name learn-cdktn-docker
+? Project Description A simple getting started project for cdktn.
 go: downloading github.com/aws/constructs-go/constructs/v10 v10.1.167
-go: downloading github.com/hashicorp/terraform-cdk-go/cdktf v0.15.0-pre.59
+go: downloading github.com/open-constructs/cdk-terrain-go/cdktn v0.15.0-pre.59
 go: downloading github.com/aws/jsii-runtime-go v1.73.0
 ========================================================================================================
-Your cdktf go project is ready!
+Your cdktn go project is ready!
 ```
 
 ```shell-session C#
-cdktf init --template=csharp --providers=kreuzwerker/docker --local
+cdktn init --template=csharp --providers=kreuzwerker/docker --local
 Note: By supplying '--local' option you have chosen local storage mode.
-? Project Name learn-cdktf-docker
-? Project Description A simple getting started project for cdktf.
+? Project Name learn-cdktn-docker
+? Project Description A simple getting started project for cdktn.
 Determining projects to restore...
 Found pre-built provider.
 Package installed.
 ========================================================================================================
-Your cdktf csharp project is ready!
+Your cdktn csharp project is ready!
 ```
 
 ```shell-session Java
-cdktf init --template=java --providers=kreuzwerker/docker --local
+cdktn init --template=java --providers=kreuzwerker/docker --local
 Note: By supplying '--local' option you have chosen local storage mode.
-? Project Name learn-cdktf-docker
-? Project Description A simple getting started project for cdktf.
+? Project Name learn-cdktn-docker
+? Project Description A simple getting started project for cdktn.
 [INFO] Scanning for projects...
 [INFO] BUILD SUCCESS
 ========================================================================================================
-Your cdktf java project is ready!
+Your cdktn java project is ready!
 ```
 
 </CodeGroup>
@@ -170,10 +172,10 @@ Replace the generated stack with the following Docker example. Each snippet defi
 
 ```ts TypeScript
 import { Construct } from "constructs";
-import { App, TerraformStack } from "cdktf";
-import { DockerProvider } from "@cdktf/provider-docker/lib/provider";
-import { Image } from "@cdktf/provider-docker/lib/image";
-import { Container } from "@cdktf/provider-docker/lib/container";
+import { App, TerraformStack } from "cdktn";
+import { DockerProvider } from "@cdktn/provider-docker/lib/provider";
+import { Image } from "@cdktn/provider-docker/lib/image";
+import { Container } from "@cdktn/provider-docker/lib/container";
 
 class MyStack extends TerraformStack {
   constructor(scope: Construct, name: string) {
@@ -200,7 +202,7 @@ class MyStack extends TerraformStack {
 }
 
 const app = new App();
-new MyStack(app, "learn-cdktf-docker");
+new MyStack(app, "learn-cdktn-docker");
 app.synth();
 ```
 
@@ -208,10 +210,10 @@ app.synth();
 #!/usr/bin/env python
 
 from constructs import Construct
-from cdktf import App, TerraformStack
-from cdktf_cdktf_provider_docker.image import Image
-from cdktf_cdktf_provider_docker.container import Container
-from cdktf_cdktf_provider_docker.provider import DockerProvider
+from cdktn import App, TerraformStack
+from cdktn_provider_docker.image import Image
+from cdktn_provider_docker.container import Container
+from cdktn_provider_docker.provider import DockerProvider
 
 
 class MyStack(TerraformStack):
@@ -242,7 +244,7 @@ class MyStack(TerraformStack):
 
 
 app = App()
-MyStack(app, "learn-cdktf-docker")
+MyStack(app, "learn-cdktn-docker")
 app.synth()
 ```
 
@@ -252,15 +254,15 @@ package main
 import (
     "github.com/aws/constructs-go/constructs/v10"
     "github.com/aws/jsii-runtime-go"
-    "github.com/hashicorp/terraform-cdk-go/cdktf"
+    "github.com/open-constructs/cdk-terrain-go/cdktn"
 
-    dockercontainer "github.com/hashicorp/cdktf-provider-docker-go/docker/v3/container"
-    dockerimage "github.com/hashicorp/cdktf-provider-docker-go/docker/v3/image"
-    dockerprovider "github.com/hashicorp/cdktf-provider-docker-go/docker/v3/provider"
+    dockercontainer "github.com/cdktn-io/cdktn-provider-docker-go/docker/v3/container"
+    dockerimage "github.com/cdktn-io/cdktn-provider-docker-go/docker/v3/image"
+    dockerprovider "github.com/cdktn-io/cdktn-provider-docker-go/docker/v3/provider"
 )
 
-func NewMyStack(scope constructs.Construct, id string) cdktf.TerraformStack {
-    stack := cdktf.NewTerraformStack(scope, &id)
+func NewMyStack(scope constructs.Construct, id string) cdktn.TerraformStack {
+    stack := cdktn.NewTerraformStack(scope, &id)
 
     dockerprovider.NewDockerProvider(stack, jsii.String("docker"), &dockerprovider.DockerProviderConfig{})
 
@@ -284,9 +286,9 @@ func NewMyStack(scope constructs.Construct, id string) cdktf.TerraformStack {
 }
 
 func main() {
-    app := cdktf.NewApp(nil)
+    app := cdktn.NewApp(nil)
 
-    NewMyStack(app, "learn-cdktf-docker")
+    NewMyStack(app, "learn-cdktn-docker")
     app.Synth()
 }
 ```
@@ -295,10 +297,10 @@ func main() {
 // MainStack.cs
 using System;
 using Constructs;
-using HashiCorp.Cdktf;
-using HashiCorp.Cdktf.Providers.Docker.Provider;
-using HashiCorp.Cdktf.Providers.Docker.Image;
-using HashiCorp.Cdktf.Providers.Docker.Container;
+using Io.Cdktn;
+using Io.Cdktn.Providers.Docker.Provider;
+using Io.Cdktn.Providers.Docker.Image;
+using Io.Cdktn.Providers.Docker.Container;
 
 namespace MyCompany.MyApp;
 
@@ -333,7 +335,7 @@ class MyApp : TerraformStack
 // Program.cs
 using System;
 using Constructs;
-using HashiCorp.Cdktf;
+using Io.Cdktn;
 
 namespace MyCompany.MyApp;
 
@@ -342,7 +344,7 @@ class Program
     public static void Main(string[] args)
     {
         var app = new App();
-        new MyApp(app, "learn-cdktf-docker");
+        new MyApp(app, "learn-cdktn-docker");
         app.Synth();
         Console.WriteLine("App synth complete");
     }
@@ -357,11 +359,11 @@ import java.util.Arrays;
 
 import software.constructs.Construct;
 
-import com.hashicorp.cdktf.TerraformStack;
-import com.hashicorp.cdktf.providers.docker.provider.DockerProvider;
-import com.hashicorp.cdktf.providers.docker.image.Image;
-import com.hashicorp.cdktf.providers.docker.container.Container;
-import com.hashicorp.cdktf.providers.docker.container.ContainerPorts;
+import io.cdktn.cdktn.TerraformStack;
+import io.cdktn.providers.docker.provider.DockerProvider;
+import io.cdktn.providers.docker.image.Image;
+import io.cdktn.providers.docker.container.Container;
+import io.cdktn.providers.docker.container.ContainerPorts;
 
 public class MainStack extends TerraformStack {
     public MainStack(final Construct scope, final String id) {
@@ -389,12 +391,12 @@ public class MainStack extends TerraformStack {
 // Main.java
 package com.mycompany.app;
 
-import com.hashicorp.cdktf.App;
+import io.cdktn.cdktn.App;
 
 public class Main {
     public static void main(String[] args) {
         final App app = new App();
-        new MainStack(app, "learn-cdktf-docker");
+        new MainStack(app, "learn-cdktn-docker");
         app.synth();
     }
 }
@@ -404,10 +406,10 @@ public class Main {
 
 ### Deploy the container
 
-From the project root, run `cdktf deploy` (Terraform or OpenTofu will prompt you to approve the plan). This command synthesizes the application, runs `terraform plan`, and provisions the Docker resources once you enter `approve`.
+From the project root, run `cdktn deploy` (Terraform or OpenTofu will prompt you to approve the plan). This command synthesizes the application, runs `terraform plan`, and provisions the Docker resources once you enter `approve`.
 
 ```shell-session Shell
-cdktf deploy learn-cdktf-docker
+cdktn deploy learn-cdktn-docker
 Initializing the backend...
 Initializing provider plugins...
 Terraform used the selected providers to generate the following execution plan.
@@ -436,7 +438,7 @@ docker ps
 When you finish testing, destroy the stack to remove the Docker container and image.
 
 ```shell-session Shell
-cdktf destroy learn-cdktf-docker
+cdktn destroy learn-cdktn-docker
 Plan: 0 to add, 0 to change, 2 to destroy.
 Do you really want to destroy all resources?
   Enter a value: approve
