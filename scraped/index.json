@@ -1,0 +1,39 @@
+{
+  "scrapeDate": "2026-01-31",
+  "source": "https://developer.hashicorp.com/terraform/tutorials/cdktf",
+  "waybackIndex": "https://web.archive.org/web/20251112223320/https://developer.hashicorp.com/terraform/tutorials/cdktf",
+  "tutorials": [
+    {
+      "slug": "cdktf-install",
+      "title": "Install CDK for Terraform and run a quick start demo",
+      "url": "https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-install",
+      "waybackUrl": "https://web.archive.org/web/20251115095039/https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-install",
+      "languages": ["typescript", "python", "go", "csharp", "java"],
+      "hasInstallTabs": true
+    },
+    {
+      "slug": "cdktf-build",
+      "title": "Build AWS infrastructure with CDK for Terraform",
+      "url": "https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-build",
+      "waybackUrl": "https://web.archive.org/web/20251115092152/https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-build",
+      "languages": ["typescript", "python", "go", "csharp", "java"],
+      "hasInstallTabs": false
+    },
+    {
+      "slug": "cdktf-assets-stacks-lambda",
+      "title": "Deploy Lambda functions with TypeScript and CDK for Terraform",
+      "url": "https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-assets-stacks-lambda",
+      "waybackUrl": "https://web.archive.org/web/20251112223320/https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-assets-stacks-lambda",
+      "languages": ["typescript"],
+      "hasInstallTabs": false
+    },
+    {
+      "slug": "cdktf-applications",
+      "title": "Deploy an application with CDK for Terraform",
+      "url": "https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-applications",
+      "waybackUrl": "https://web.archive.org/web/20251112223320/https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-applications",
+      "languages": ["typescript"],
+      "hasInstallTabs": false
+    }
+  ]
+}

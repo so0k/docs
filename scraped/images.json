@@ -1,0 +1,25 @@
+{
+  "images": [
+    {
+      "id": "cdktf-install-img-1",
+      "tutorial": "cdktf-install",
+      "alt": "Terraform as Platform",
+      "src": "https://content.hashicorp.com/api/assets?product=tutorials&version=main&asset=public%2Fimg%2Fterraform%2Fcdktf%2Fterraform-as-platform.png&width=1776&height=1317",
+      "filename": "terraform-as-platform.png"
+    },
+    {
+      "id": "cdktf-install-img-2",
+      "tutorial": "cdktf-install",
+      "alt": "NGINX running in Docker via Terraform",
+      "src": "https://content.hashicorp.com/api/assets?product=tutorials&version=main&asset=public%2Fimg%2Fterraform%2Fgetting-started%2Fterraform-docker-nginx.png&width=2048&height=510",
+      "filename": "terraform-docker-nginx.png"
+    },
+    {
+      "id": "cdktf-build-img-1",
+      "tutorial": "cdktf-build",
+      "alt": "AWS Console",
+      "src": "https://content.hashicorp.com/api/assets?product=tutorials&version=main&asset=public%2Fimg%2Fterraform%2Fcdktf%2Faws-console.png&width=2048&height=1176",
+      "filename": "aws-console.png"
+    }
+  ]
+}

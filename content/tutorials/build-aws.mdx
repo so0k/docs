@@ -1,0 +1,432 @@
+---
+title: Build AWS infrastructure with CDK for Terraform
+description: Provision an AWS EC2 instance with CDKTF in your preferred language, store state in HCP Terraform, then update the stack by adding a Name tag.
+---
+
+<Note>
+This guide was recovered from the [Wayback Machine snapshot of “Build AWS infrastructure with CDK for Terraform”](https://web.archive.org/web/20251115092152/https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-build).
+</Note>
+
+In this tutorial, you provision an AWS EC2 instance with CDK for Terraform (CDKTF) using Terraform (or OpenTofu). You will also store state in HCP Terraform and output the instance public IP.
+
+If you have not installed CDKTF yet, follow the [install tutorial](/tutorials/install) first.
+
+## Prerequisites
+
+- Terraform CLI v1.2+ (or [OpenTofu](https://opentofu.org/))
+- CDKTF CLI v0.15+
+- HCP Terraform account with CLI authentication configured
+- AWS account
+- AWS credentials configured for Terraform (environment variables or another supported credential method)
+- A recent version of your preferred language runtime (TypeScript, Python, Go, C#, or Java)
+
+<Tip>CDKTF works with both Terraform and OpenTofu. To run OpenTofu, set `TERRAFORM_BINARY_NAME=tofu` before using the CLI—refer to [Environment Variables](/docs/create-and-deploy/environment-variables) for details.</Tip>
+
+## Initialize a new CDK for Terraform application
+
+Create a new project directory and move into it.
+
+```shell Shell
+mkdir learn-cdktf
+cd learn-cdktf
+```
+
+Initialize the project using the AWS provider. When prompted, select your HCP Terraform organization and accept the default workspace name (`learn-cdktf`).
+
+<CodeGroup>
+
+```shell-session TypeScript
+cdktf init --template="typescript" --providers="aws@~>4.0"
+Detected Terraform Cloud token.
+? Terraform Cloud Organization Name <YOUR_ORG>
+? Terraform Cloud Workspace Name learn-cdktf
+...
+Your cdktf typescript project is ready!
+```
+
+```shell-session Python
+cdktf init --template="python" --providers="aws@~>4.0"
+Detected Terraform Cloud token.
+? Terraform Cloud Organization Name <YOUR_ORG>
+? Terraform Cloud Workspace Name learn-cdktf
+...
+Your cdktf Python project is ready!
+```
+
+```shell-session Go
+cdktf init --template="go" --providers="aws@~>4.0"
+Detected Terraform Cloud token.
+? Terraform Cloud Organization Name <YOUR_ORG>
+? Terraform Cloud Workspace Name learn-cdktf
+...
+Your cdktf go project is ready!
+```
+
+```shell-session C#
+cdktf init --template="csharp" --providers="aws@~>4.0"
+Detected Terraform Cloud token.
+? Terraform Cloud Organization Name <YOUR_ORG>
+? Terraform Cloud Workspace Name learn-cdktf
+...
+Your cdktf csharp project is ready!
+```
+
+```shell-session Java
+cdktf init --template="java" --providers="aws@~>4.0"
+Detected Terraform Cloud token.
+? Terraform Cloud Organization Name <YOUR_ORG>
+? Terraform Cloud Workspace Name learn-cdktf
+...
+Your cdktf java project is ready!
+```
+
+</CodeGroup>
+
+<Tip>If you prefer to store state locally, re-run `cdktf init` with `--local` and skip configuring a remote backend in the next section.</Tip>
+
+## Define your CDK for Terraform application
+
+Replace the generated application code with the following for your language. The stack configures the AWS provider, creates an EC2 instance in `us-west-1`, and defines a `public_ip` output.
+
+Replace `<YOUR_ORG>` with your HCP Terraform organization name. If you used a different workspace name, replace `learn-cdktf` with that name.
+
+<CodeGroup>
+
+```ts TypeScript
+import { Construct } from "constructs";
+import { App, TerraformOutput, TerraformStack, RemoteBackend } from "cdktf";
+import { AwsProvider } from "@cdktf/provider-aws/lib/provider";
+import { Instance } from "@cdktf/provider-aws/lib/instance";
+
+class MyStack extends TerraformStack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    new AwsProvider(this, "AWS", {
+      region: "us-west-1",
+    });
+
+    const ec2Instance = new Instance(this, "compute", {
+      ami: "ami-01456a894f71116f2",
+      instanceType: "t2.micro",
+    });
+
+    new TerraformOutput(this, "public_ip", {
+      value: ec2Instance.publicIp,
+    });
+  }
+}
+
+const app = new App();
+const stack = new MyStack(app, "aws_instance");
+
+new RemoteBackend(stack, {
+  hostname: "app.terraform.io",
+  organization: "<YOUR_ORG>",
+  workspaces: {
+    name: "learn-cdktf",
+  },
+});
+
+app.synth();
+```
+
+```python Python
+#!/usr/bin/env python
+
+from constructs import Construct
+from cdktf import App, NamedRemoteWorkspace, TerraformStack, TerraformOutput, RemoteBackend
+
+from cdktf_cdktf_provider_aws.provider import AwsProvider
+from cdktf_cdktf_provider_aws.instance import Instance
+
+
+class MyStack(TerraformStack):
+    def __init__(self, scope: Construct, ns: str):
+        super().__init__(scope, ns)
+
+        AwsProvider(self, "AWS", region="us-west-1")
+
+        instance = Instance(
+            self,
+            "compute",
+            ami="ami-01456a894f71116f2",
+            instance_type="t2.micro",
+        )
+
+        TerraformOutput(self, "public_ip", value=instance.public_ip)
+
+
+app = App()
+stack = MyStack(app, "aws_instance")
+
+RemoteBackend(
+    stack,
+    hostname="app.terraform.io",
+    organization="<YOUR_ORG>",
+    workspaces=NamedRemoteWorkspace("learn-cdktf"),
+)
+
+app.synth()
+```
+
+```go Go
+package main
+
+import (
+    "github.com/aws/constructs-go/constructs/v10"
+    "github.com/aws/jsii-runtime-go"
+    "github.com/hashicorp/terraform-cdk-go/cdktf"
+
+    "github.com/cdktf/cdktf-provider-aws-go/aws/v10/instance"
+    awsprovider "github.com/cdktf/cdktf-provider-aws-go/aws/v10/provider"
+)
+
+func NewMyStack(scope constructs.Construct, id string) cdktf.TerraformStack {
+    stack := cdktf.NewTerraformStack(scope, &id)
+
+    awsprovider.NewAwsProvider(stack, jsii.String("AWS"), &awsprovider.AwsProviderConfig{
+        Region: jsii.String("us-west-1"),
+    })
+
+    inst := instance.NewInstance(stack, jsii.String("compute"), &instance.InstanceConfig{
+        Ami:          jsii.String("ami-01456a894f71116f2"),
+        InstanceType: jsii.String("t2.micro"),
+    })
+
+    cdktf.NewTerraformOutput(stack, jsii.String("public_ip"), &cdktf.TerraformOutputConfig{
+        Value: inst.PublicIp(),
+    })
+
+    return stack
+}
+
+func main() {
+    app := cdktf.NewApp(nil)
+    stack := NewMyStack(app, "aws_instance")
+
+    cdktf.NewRemoteBackend(stack, &cdktf.RemoteBackendProps{
+        Hostname:     jsii.String("app.terraform.io"),
+        Organization: jsii.String("<YOUR_ORG>"),
+        Workspaces:   cdktf.NewNamedRemoteWorkspace(jsii.String("learn-cdktf")),
+    })
+
+    app.Synth()
+}
+```
+
+```csharp C#
+// MainStack.cs
+using System;
+using Constructs;
+using HashiCorp.Cdktf;
+using HashiCorp.Cdktf.Providers.Aws.Provider;
+using HashiCorp.Cdktf.Providers.Aws.Instance;
+
+namespace MyCompany.MyApp
+{
+    class MainStack : TerraformStack
+    {
+        public MainStack(Construct scope, string id) : base(scope, id)
+        {
+            new AwsProvider(this, "AWS", new AwsProviderConfig { Region = "us-west-1" });
+
+            Instance instance = new Instance(this, "compute", new InstanceConfig
+            {
+                Ami = "ami-01456a894f71116f2",
+                InstanceType = "t2.micro",
+            });
+
+            new TerraformOutput(this, "public_ip", new TerraformOutputConfig
+            {
+                Value = instance.PublicIp,
+            });
+        }
+    }
+}
+
+// Program.cs
+using System;
+using Constructs;
+using HashiCorp.Cdktf;
+
+namespace MyCompany.MyApp
+{
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            App app = new App();
+            MainStack stack = new MainStack(app, "aws_instance");
+
+            new RemoteBackend(
+                stack,
+                new RemoteBackendProps
+                {
+                    Hostname = "app.terraform.io",
+                    Organization = "<YOUR_ORG>",
+                    Workspaces = new NamedRemoteWorkspace("learn-cdktf"),
+                }
+            );
+
+            app.Synth();
+        }
+    }
+}
+```
+
+```java Java
+// src/main/java/com/mycompany/app/MainStack.java
+package com.mycompany.app;
+
+import software.constructs.Construct;
+
+import com.hashicorp.cdktf.TerraformStack;
+import com.hashicorp.cdktf.TerraformOutput;
+import com.hashicorp.cdktf.providers.aws.provider.AwsProvider;
+import com.hashicorp.cdktf.providers.aws.instance.Instance;
+
+public class MainStack extends TerraformStack {
+    public MainStack(final Construct scope, final String id) {
+        super(scope, id);
+
+        AwsProvider.Builder.create(this, "AWS")
+            .region("us-west-1")
+            .build();
+
+        Instance instance = Instance.Builder.create(this, "compute")
+            .ami("ami-01456a894f71116f2")
+            .instanceType("t2.micro")
+            .build();
+
+        TerraformOutput.Builder.create(this, "public_ip")
+            .value(instance.getPublicIp())
+            .build();
+    }
+}
+
+// src/main/java/com/mycompany/app/Main.java
+package com.mycompany.app;
+
+import com.hashicorp.cdktf.App;
+import com.hashicorp.cdktf.NamedRemoteWorkspace;
+import com.hashicorp.cdktf.RemoteBackend;
+import com.hashicorp.cdktf.RemoteBackendProps;
+import com.hashicorp.cdktf.TerraformStack;
+
+public class Main {
+    public static void main(String[] args) {
+        final App app = new App();
+        TerraformStack stack = new MainStack(app, "aws_instance");
+
+        new RemoteBackend(stack, RemoteBackendProps.builder()
+            .hostname("app.terraform.io")
+            .organization("<YOUR_ORG>")
+            .workspaces(new NamedRemoteWorkspace("learn-cdktf"))
+            .build());
+
+        app.synth();
+    }
+}
+```
+
+</CodeGroup>
+
+## Provision infrastructure
+
+Deploy the stack. CDKTF synthesizes Terraform configuration, runs a plan, and prompts you to approve the changes.
+
+```shell-session Shell
+cdktf deploy
+Deploying Stack: aws_instance
+Resources
+\u2714 AWS_INSTANCE compute aws_instance.compute
+Summary: 1 created, 0 updated, 0 destroyed.
+
+Output:
+public_ip = 50.18.17.102
+```
+
+When the deploy finishes, you can find the instance in the AWS Console.
+
+![AWS Console showing the provisioned instance](../images/tutorials/aws-console.png)
+
+## Change infrastructure by adding the Name tag
+
+Update the EC2 instance resource to add a `Name` tag, then deploy again.
+
+<CodeGroup>
+
+```ts TypeScript
+const ec2Instance = new Instance(this, "compute", {
+  ami: "ami-01456a894f71116f2",
+  instanceType: "t2.micro",
+  tags: {
+    Name: "CDKTF-Demo",
+  },
+});
+```
+
+```python Python
+instance = Instance(
+    self,
+    "compute",
+    ami="ami-01456a894f71116f2",
+    instance_type="t2.micro",
+    tags={"Name": "CDKTF-Demo"},
+)
+```
+
+```go Go
+inst := instance.NewInstance(stack, jsii.String("compute"), &instance.InstanceConfig{
+    Ami:          jsii.String("ami-01456a894f71116f2"),
+    InstanceType: jsii.String("t2.micro"),
+    Tags: &map[string]*string{
+        "Name": jsii.String("CDKTF-Demo"),
+    },
+})
+```
+
+```csharp C#
+using System.Collections.Generic;
+
+Instance instance = new Instance(this, "compute", new InstanceConfig
+{
+    Ami = "ami-01456a894f71116f2",
+    InstanceType = "t2.micro",
+    Tags = new Dictionary<string, string>
+    {
+        { "Name", "CDKTF-Demo" },
+    },
+});
+```
+
+```java Java
+import java.util.Map;
+
+Instance instance = Instance.Builder.create(this, "compute")
+    .ami("ami-01456a894f71116f2")
+    .instanceType("t2.micro")
+    .tags(Map.of("Name", "CDKTF-Demo"))
+    .build();
+```
+
+</CodeGroup>
+
+```shell-session Shell
+cdktf deploy
+```
+
+## Clean up your infrastructure
+
+Destroy the stack to remove the EC2 instance.
+
+```shell-session Shell
+cdktf destroy
+```
+
+## Next steps
+
+- Learn how to package and deploy [Lambda functions](/tutorials/lambda-functions).
+- Follow the end-to-end [Deploy applications tutorial](/tutorials/deploy-applications).
+- Review how CDKTF works with Terraform [providers](/docs/concepts/providers) and [stacks](/docs/concepts/stacks).

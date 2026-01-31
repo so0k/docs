@@ -113,6 +113,21 @@
           }
         ]
       }
+      ,
+      { 
+        "tab": "Tutorials",
+        "groups": [
+          {
+            "group": "Basic",
+            "pages": [
+              "tutorials/install",
+              "tutorials/build-aws",
+              "tutorials/lambda-functions",
+              "tutorials/deploy-applications"
+            ]
+          }
+        ]
+      }
     ],
     "global": {
       "anchors": [
