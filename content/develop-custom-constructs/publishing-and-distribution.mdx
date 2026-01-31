@@ -9,7 +9,7 @@ Custom construct classes are reusable infrastructure configurations written in a
 
 ## Translate Constructs to Terraform Modules
 
-You can write a CDKTN construct class and then synthesize the code into an HCL [Terraform module](/terraform/language/modules). When you use this approach, you are limited to the structure and functionality available in a Terraform module. For example, you cannot use enums or methods to provide advanced configuration options.
+You can write a CDKTN construct class and then synthesize the code into an HCL [Terraform module](https://developer.hashicorp.com/terraform/language/modules). When you use this approach, you are limited to the structure and functionality available in a Terraform module. For example, you cannot use enums or methods to provide advanced configuration options.
 
 Use the [cdktf-tf-module-stack](https://github.com/cdktf/cdktf-tf-module-stack) to transform your code into a Terraform module. This library exposes `TFModuleStack`, `TFModuleVariable`, `TFModuleOutput` constructs that you can use as replacements for `TerraformStack`, `TerraformVariable`, `TerraformOutput`.
 

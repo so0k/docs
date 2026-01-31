@@ -52,7 +52,7 @@ The most basic configuration only defines `app`. This is useful when you plan to
 
 You must declare all of the providers and modules that require code bindings in your `cdktf.json` file. CDKTN generates these code bindings from `cdktf.json` when you run `cdktn get`. We have a selection of pre-built [providers](/concepts/providers#install-pre-built-providers) available, but you may occasionally want to re-generate the code bindings for those providers yourself. For example, you may need a different version of that provider than the pre-built package. We do not provide pre-built modules, so you must always declare them in your `cdktf.json` file.
 
-The [schema](/terraform/language/providers/requirements#source-addresses) for both providers and modules in CDK Terrain consists of a name, a [source](/terraform/language/providers/requirements#source-addresses), and a [version constraint](/terraform/language/providers/requirements#version-constraints).
+The [schema](https://developer.hashicorp.com/terraform/language/providers/requirements#source-addresses) for both providers and modules in CDK Terrain consists of a name, a [source](https://developer.hashicorp.com/terraform/language/providers/requirements#source-addresses), and a [version constraint](https://developer.hashicorp.com/terraform/language/providers/requirements#version-constraints).
 
 You can declare providers and modules using either JSON or a string with the format `source@ ~> version`.
 
@@ -82,7 +82,7 @@ You can declare providers and modules using either JSON or a string with the for
 
 ### Version Constraint
 
-When you declare providers and modules in the string format, add the [version constraint](/terraform/language/expressions/version-constraints#version-constraint-syntax) after the provider or module name separated by an `@`. For example, so `provider|module@ ~> version`. The version constraint is optional; when you omit the version constraint, CDK Terrain will download and use the latest version.
+When you declare providers and modules in the string format, add the [version constraint](https://developer.hashicorp.com/terraform/language/expressions/version-constraints#version-constraint-syntax) after the provider or module name separated by an `@`. For example, so `provider|module@ ~> version`. The version constraint is optional; when you omit the version constraint, CDK Terrain will download and use the latest version.
 
 When you declare providers in JSON, add the constraint in the `version` property.
 

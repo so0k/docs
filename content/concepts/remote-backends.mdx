@@ -6,7 +6,7 @@ description: >-
   files remotely.
 ---
 
-Terraform (or OpenTofu) stores [state](/terraform/language/state) about managed infrastructure to map real-world resources to the configuration, keep track of metadata, and improve performance. Terraform stores this state in a local file by default, but you can also use a Terraform [remote backend](/terraform/language/settings/backends/remote) to store state remotely.
+Terraform (or OpenTofu) stores [state](https://developer.hashicorp.com/terraform/language/state) about managed infrastructure to map real-world resources to the configuration, keep track of metadata, and improve performance. Terraform stores this state in a local file by default, but you can also use a Terraform [remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) to store state remotely.
 
 By default, `cdktn init` will configure a HCP Terraform workspace and a corresponding remote backend to store state for the new project. If you run `cdktn init --local` to configure your new project to use a local backend to store state, you can still [migrate the state](#migrate-local-state-storage-to-remote) to a remote backend later.
 
@@ -16,11 +16,11 @@ You can configure your CDK Terrain (CDKTN) remote backend to be [HCP Terraform](
 
 Consider using a remote backend when multiple individuals or teams need access to your infrastructure state data.
 
-[Remote state](/terraform/language/state/remote) makes it easier for teams to work together because all members have access to the latest state data in the remote store. It also allows you to share output values with other configurations, allowing groups to share infrastructure resources. For example, a core infrastructure team can handle building the core machines and then expose some information that other teams can use for their own infrastructure.
+[Remote state](https://developer.hashicorp.com/terraform/language/state/remote) makes it easier for teams to work together because all members have access to the latest state data in the remote store. It also allows you to share output values with other configurations, allowing groups to share infrastructure resources. For example, a core infrastructure team can handle building the core machines and then expose some information that other teams can use for their own infrastructure.
 
 ## Define Remote Backends
 
-You can define a [JSON configuration for a remote backend](/terraform/language/syntax/json#terraform-blocks)
+You can define a [JSON configuration for a remote backend](https://developer.hashicorp.com/terraform/language/syntax/json#terraform-blocks)
 with a `TerraformBackend` subclass or a JSON configuration file.
 
 The following example uses the `TerraformBackend` subclass `CloudBackend`.
@@ -368,44 +368,44 @@ func main() {
 
 In addition to HCP Terraform, Terraform and CDKTN support the following backends.
 
-- [local](/terraform/language/settings/backends/local)
+- [local](https://developer.hashicorp.com/terraform/language/settings/backends/local)
   ```typescript
   new LocalBackend(stack, {...});
   ```
-- [azurerm](/terraform/language/settings/backends/azurerm)
+- [azurerm](https://developer.hashicorp.com/terraform/language/settings/backends/azurerm)
   ```typescript
   new AzurermBackend(stack, {...});
   ```
-- [consul](/terraform/language/settings/backends/consul)
+- [consul](https://developer.hashicorp.com/terraform/language/settings/backends/consul)
   ```typescript
   new ConsulBackend(stack, {...});
   ```
-- [cos](/terraform/language/settings/backends/cos)
+- [cos](https://developer.hashicorp.com/terraform/language/settings/backends/cos)
   ```typescript
   new CosBackend(stack, {...});
   ```
-- [gcs](/terraform/language/settings/backends/gcs)
+- [gcs](https://developer.hashicorp.com/terraform/language/settings/backends/gcs)
   ```typescript
   new GcsBackend(stack, {...});
   ```
-- [http](/terraform/language/settings/backends/http)
+- [http](https://developer.hashicorp.com/terraform/language/settings/backends/http)
   ```typescript
   new HttpBackend(stack, {...});
   ```
-- [oss](/terraform/language/settings/backends/oss)
+- [oss](https://developer.hashicorp.com/terraform/language/settings/backends/oss)
   ```typescript
   new OssBackend(stack, {...});
   ```
-- [pg](/terraform/language/settings/backends/pg)
+- [pg](https://developer.hashicorp.com/terraform/language/settings/backends/pg)
   ```typescript
   new PgBackend(stack, {...});
   ```
-- [s3](/terraform/language/settings/backends/s3)
+- [s3](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
   ```typescript
   new S3Backend(stack, {...});
   ```
 
-<Note>CDK Terrain v0.14 deprecated the artifactory, etcd, etcdv3, manta, and swift backends, and removed them in v0.20. Terraform removed these backends in v1.3. For migration paths from these removed backends, refer to [Upgrading to Terraform v1.3](/terraform/language/v1.3.x/upgrade-guides).</Note>
+<Note>CDK Terrain v0.14 deprecated the artifactory, etcd, etcdv3, manta, and swift backends, and removed them in v0.20. Terraform removed these backends in v1.3. For migration paths from these removed backends, refer to [Upgrading to Terraform v1.3](https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides).</Note>
 
 ## Escape Hatches
 

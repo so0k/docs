@@ -7,7 +7,7 @@ description: |-
 
 Custom construct classes are reusable infrastructure configurations written in a programming language.
 
-Similar to [Terraform modules](/terraform/language/modules), constructs let you reuse configurations, enforce infrastructure best practices, and abstract configuration details away from users. For example, you might create a construct that configures a Kubernetes deployment.
+Similar to [Terraform modules](https://developer.hashicorp.com/terraform/language/modules), constructs let you reuse configurations, enforce infrastructure best practices, and abstract configuration details away from users. For example, you might create a construct that configures a Kubernetes deployment.
 
 Constructs can also use programming functionality to provide more customization and guidance than a Terraform module. Users only customize modules through inputs, so complex modules can expose hundreds of options. Even if the module provides valid defaults, users must determine which inputs are relevant to their use case and how to configure them. Constructs are much more flexible. For example, a construct can dynamically build defaults from non-input values and let users override methods that create infrastructure objects.
 

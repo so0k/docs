@@ -7,7 +7,7 @@ description: >-
 
 This page explains how to connect HCP Terraform / Terraform Enterprise to your CDK Terrain (CDKTN) application and the benefits of using these products together.
 
-<Tip>Try our [Get Started - HCP Terraform](https://docs.terrateam.io/quickstart/) tutorials.</Tip>
+<Tip>Try our [Get Started - HCP Terraform](https://developer.hashicorp.com/terraform/tutorials/cloud-get-started) tutorials.</Tip>
 
 ## What are HCP Terraform and Terraform Enterprise?
 
@@ -140,7 +140,7 @@ HCP Terraform / Terraform Enterprise [variables](/terraform/cloud-docs/workspace
 
 To use variables, set your workspace to [Remote Execution Mode](/terraform/cloud-docs/workspaces/settings#execution-mode). Terraform can only access workspace variables when executing remotely on HCP Terraform / Enterprise.
 
-2. Use the `TerraformVariable` construct to declare variables in your CDKTN application. This creates an undefined [Terraform input variable](/terraform/language/values/variables). The following example demonstrates how to create a `TerraformVariable` called `my-var`.
+2. Use the `TerraformVariable` construct to declare variables in your CDKTN application. This creates an undefined [Terraform input variable](https://developer.hashicorp.com/terraform/language/values/variables). The following example demonstrates how to create a `TerraformVariable` called `my-var`.
 
    ```typescript
    import { Construct } from "constructs";

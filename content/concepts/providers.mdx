@@ -6,7 +6,7 @@ description: >-
   providers in a CDK Terrain application.
 ---
 
-A [provider](/terraform/language/providers) is a plugin that lets Terraform manage an external API. In your CDK Terrain (CDKTN) application, you use your preferred programming language to define the [resources](/concepts/resources) you want Terraform to manage on one or more providers.
+A [provider](https://developer.hashicorp.com/terraform/language/providers) is a plugin that lets Terraform manage an external API. In your CDK Terrain (CDKTN) application, you use your preferred programming language to define the [resources](/concepts/resources) you want Terraform to manage on one or more providers.
 
 You can install pre-built providers packaged with the required code bindings for your language or add providers to the [`cdktf.json`](/create-and-deploy/configuration-file) file and generate code bindings manually. To use providers in your application, you can import them from the Terraform Registry or the [OpenTofu Registry](https://search.opentofu.org/), or from your local machine.
 
@@ -18,7 +18,7 @@ import { PluginOverviewDiagram } from '/snippets/PluginOverviewDiagram.jsx';
 
 <PluginOverviewDiagram />
 
-Terraform uses providers to provision [resources](/terraform/language/resources), which describe one or more infrastructure objects like virtual networks and compute instances. Each provider on the [Terraform Registry](https://registry.terraform.io/) (also available on the [OpenTofu Registry](https://search.opentofu.org/)) has documentation detailing available resources and their configuration options.
+Terraform uses providers to provision [resources](https://developer.hashicorp.com/terraform/language/resources), which describe one or more infrastructure objects like virtual networks and compute instances. Each provider on the [Terraform Registry](https://registry.terraform.io/) (also available on the [OpenTofu Registry](https://search.opentofu.org/)) has documentation detailing available resources and their configuration options.
 
 ## Install Pre-Built Providers
 
@@ -46,7 +46,7 @@ Use the [`provider add` command](/cli-reference/commands#provider-add) to automa
 
 ## Import Providers
 
-CDK Terrain lets you import Terraform [providers](/terraform/language/providers) to your project.
+CDK Terrain lets you import Terraform [providers](https://developer.hashicorp.com/terraform/language/providers) to your project.
 
 This TypeScript example project has a `main.ts` file that defines AWS resources.
 
